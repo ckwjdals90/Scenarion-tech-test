@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 
 import MessageList from './components/MessageList.js';
+import CreateMessage from './components/CreateMessage.js';
 
 import 'whatwg-fetch';
 
@@ -11,10 +12,13 @@ class App extends Component {
     super();
     this.state = {
       data: {},
-      messages: []
+      messages: [],
+      toggle: false
     }
 
     this.fetchMessages = this.fetchMessages.bind(this);
+    this.handleToggle = this.handleToggle.bind(this);
+    this.viewCreate = this.viewCreate.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +37,19 @@ class App extends Component {
       })
   }
 
+  handleToggle(e) {
+    e.preventDefault();
+    (this.state.toggle === true) ? this.setState({toggle: false}) : this.setState({toggle: true})
+  }
+
+  viewCreate() {
+    if (this.state.toggle === true) {
+      return <CreateMessage fetchMessages={this.fetchMessages} currentMessageCount={this.state.data.count} />
+    } else {
+      return;
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -40,6 +57,8 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2>Jungmin's Tech Test</h2>
         </div>
+        <a href="#" onClick={this.handleToggle}>Create New Message</a>
+        {this.viewCreate()}
         <ul>
           {this.state.messages.map((message) => {
             return <MessageList key={message.id} message={message} />

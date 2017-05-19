@@ -17,7 +17,7 @@ class MessageDetails extends Component {
       <div>
         <p>Author: {this.props.details.author}</p>
         <p>{this.props.details.text}</p>
-        <p>posted on {this.props.details.created_at}, updated on {this.props.details.updated_at}</p>
+        <p>posted on {this.props.details.created_at}, last updated on {this.props.details.updated_at}</p>
       </div>
     );
   }
