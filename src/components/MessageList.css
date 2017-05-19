@@ -1,0 +1,19 @@
+.message-lists a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  background-color: #495057;
+  color: white;
+  padding: 0.5rem;
+  transition: background .3s;
+  max-width: 80%;
+  margin: auto;
+}
+
+.message-lists a:hover {
+  background-color: #868e96;
+}
+
+.message-lists a:active {
+  background-color: #343a40;
+}
