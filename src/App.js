@@ -17,21 +17,22 @@ class App extends Component {
       toggle: false
     }
 
-    this.clearMessages = this.clearMessages.bind(this);
     this.fetchMessages = this.fetchMessages.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.viewCreate = this.viewCreate.bind(this);
+    // this.clearMessages = this.clearMessages.bind(this);
   }
 
   componentDidMount() {
     this.fetchMessages();
   }
 
-  clearMessages() {
-    this.setState({
-      messages: []
-    })
-  }
+
+  // clearMessages() {
+  //   this.setState({
+  //     messages: []
+  //   })
+  // }
 
   fetchMessages() {
     let msgAry = this.state.messages
@@ -57,7 +58,6 @@ class App extends Component {
             fetchFrom: 'https://jungmin-tech-test.herokuapp.com/messages/'
           })
           return;
-          msgAry.length = 0;
         }
       })
   }
@@ -69,13 +69,19 @@ class App extends Component {
 
   viewCreate() {
     if (this.state.toggle === true) {
-      return <CreateMessage fetchMessages={this.fetchMessages} currentMessageCount={this.state.data.count} handleToggle={this.handleToggle} clearMessages={this.clearMessages} />
+      return <CreateMessage fetchMessages={this.fetchMessages} currentMessageCount={this.state.data.count} handleToggle={this.handleToggle} /* clearMessages={this.clearMessages} */ />
     } else {
       return;
     }
   }
 
   render() {
+
+    const mapMsg = (messages) => {
+      messages.map((message, i) => {
+        <MessageList key={i} message={message} fetchMessages={this.fetchMessages} />
+      })
+    }
     return (
       <div className="App">
         <div className="App-header">
@@ -85,8 +91,8 @@ class App extends Component {
         <a href="#" onClick={this.handleToggle}>Create New Message</a>
         {this.viewCreate()}
         <ul>
-          {this.state.messages.map((message) => {
-            return <MessageList key={message.id} message={message} fetchMessages={this.fetchMessages} />
+          {this.state.messages.map((message, i) => {
+            return <MessageList key={i} message={message} fetchMessages={this.fetchMessages} />
           })}
         </ul>
       </div>

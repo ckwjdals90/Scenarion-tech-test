@@ -36,9 +36,8 @@ class CreateMessage extends Component {
       },
       body: JSON.stringify(this.state)
     })
-    console.log("submit state: ", this.state);
     console.log("Submit!");
-    this.props.clearMessages();
+    // this.props.clearMessages();
     this.props.fetchMessages();
     this.props.handleToggle();
   }

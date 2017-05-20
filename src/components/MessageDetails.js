@@ -2,8 +2,6 @@
 
 import React, { Component } from 'react';
 
-// import './MessageList.css'
-
 class MessageDetails extends Component {
   constructor(props) {
     super(props);
@@ -17,8 +15,7 @@ class MessageDetails extends Component {
     e.preventDefault();
     fetch(`https://jungmin-tech-test.herokuapp.com/messages/${this.props.details.id}`, {
       method: 'DELETE'
-    })
-
+    }).then(this.props.fetchMessages())
   }
 
   render() {
