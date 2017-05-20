@@ -11,11 +11,13 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
+      fetchFrom: 'https://jungmin-tech-test.herokuapp.com/messages/',
       data: {},
       messages: [],
       toggle: false
     }
 
+    this.clearMessages = this.clearMessages.bind(this);
     this.fetchMessages = this.fetchMessages.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.viewCreate = this.viewCreate.bind(this);
@@ -25,26 +27,49 @@ class App extends Component {
     this.fetchMessages();
   }
 
+  clearMessages() {
+    this.setState({
+      messages: []
+    })
+  }
+
   fetchMessages() {
-    fetch('https://jungmin-tech-test.herokuapp.com/messages/')
+    let msgAry = this.state.messages
+    fetch(this.state.fetchFrom)
       .then((res) => {
         return res.json();
       }).then((body) => {
+        msgAry = msgAry.concat(body.results)
         this.setState({
           data: body,
-          messages: body.results
-        });
+          messages: msgAry
+        })
+        return body;
+      })
+      .then((body) => {
+        if (body.next && body.next !== null) {
+        this.setState({
+          fetchFrom: body.next
+        })
+        this.fetchMessages();
+        } else {
+          this.setState({
+            fetchFrom: 'https://jungmin-tech-test.herokuapp.com/messages/'
+          })
+          return;
+          msgAry.length = 0;
+        }
       })
   }
 
   handleToggle(e) {
-    e.preventDefault();
+    if (e) {e.preventDefault();}
     (this.state.toggle === true) ? this.setState({toggle: false}) : this.setState({toggle: true})
   }
 
   viewCreate() {
     if (this.state.toggle === true) {
-      return <CreateMessage fetchMessages={this.fetchMessages} currentMessageCount={this.state.data.count} />
+      return <CreateMessage fetchMessages={this.fetchMessages} currentMessageCount={this.state.data.count} handleToggle={this.handleToggle} clearMessages={this.clearMessages} />
     } else {
       return;
     }
@@ -61,7 +86,7 @@ class App extends Component {
         {this.viewCreate()}
         <ul>
           {this.state.messages.map((message) => {
-            return <MessageList key={message.id} message={message} />
+            return <MessageList key={message.id} message={message} fetchMessages={this.fetchMessages} />
           })}
         </ul>
       </div>

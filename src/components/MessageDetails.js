@@ -10,6 +10,15 @@ class MessageDetails extends Component {
     this.state = {
 
     }
+    this.deleteMessage = this.deleteMessage.bind(this);
+  }
+
+  deleteMessage(e) {
+    e.preventDefault();
+    fetch(`https://jungmin-tech-test.herokuapp.com/messages/${this.props.details.id}`, {
+      method: 'DELETE'
+    })
+
   }
 
   render() {
@@ -18,6 +27,7 @@ class MessageDetails extends Component {
         <p>Author: {this.props.details.author}</p>
         <p>{this.props.details.text}</p>
         <p>posted on {this.props.details.created_at}, last updated on {this.props.details.updated_at}</p>
+        <button onClick={this.deleteMessage}>Delete</button>
       </div>
     );
   }
