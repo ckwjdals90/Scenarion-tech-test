@@ -33,7 +33,7 @@ class MessageList extends Component {
 
   renderDetails() {
     if (this.state.show === true) {
-      return <MessageDetails details={this.state.details} fetchMessages={this.props.fetchMessages} />
+      return <MessageDetails details={this.state.details} fetchMessages={this.props.fetchMessages} /*clearMessages={this.props.clearMessages}*/ />
     } else {
       return
     }

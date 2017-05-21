@@ -12,7 +12,6 @@ class App extends Component {
     super();
     this.state = {
       fetchFrom: 'https://jungmin-tech-test.herokuapp.com/messages/',
-      data: {},
       messages: [],
       toggle: false
     }
@@ -35,31 +34,34 @@ class App extends Component {
   // }
 
   fetchMessages() {
-    let msgAry = this.state.messages
+    console.log(this.state.fetchFrom)
     fetch(this.state.fetchFrom)
-      .then((res) => {
-        return res.json();
-      }).then((body) => {
-        msgAry = msgAry.concat(body.results)
+    .then((res) => {
+      return res.json();
+    }).then((body) => {
+      if (body.previous === null) {
         this.setState({
-          data: body,
-          messages: msgAry
+          messages: body.results
         })
-        return body;
-      })
-      .then((body) => {
-        if (body.next && body.next !== null) {
+      } else {
+        this.setState({
+          messages: this.state.messages.concat(body.results)
+        })
+      }
+      return body;
+    }).then((body) => {
+      if (body.next && body.next !== null) {
         this.setState({
           fetchFrom: body.next
         })
         this.fetchMessages();
-        } else {
-          this.setState({
-            fetchFrom: 'https://jungmin-tech-test.herokuapp.com/messages/'
-          })
-          return;
-        }
-      })
+      } else {
+        this.setState({
+          fetchFrom: 'https://jungmin-tech-test.herokuapp.com/messages/',
+        })
+        return;
+      }
+    })
   }
 
   handleToggle(e) {
@@ -69,7 +71,7 @@ class App extends Component {
 
   viewCreate() {
     if (this.state.toggle === true) {
-      return <CreateMessage fetchMessages={this.fetchMessages} currentMessageCount={this.state.data.count} handleToggle={this.handleToggle} /* clearMessages={this.clearMessages} */ />
+      return <CreateMessage fetchMessages={this.fetchMessages}  handleToggle={this.handleToggle} /*clearMessages={this.clearMessages}*/ />
     } else {
       return;
     }
@@ -77,11 +79,11 @@ class App extends Component {
 
   render() {
 
-    const mapMsg = (messages) => {
-      messages.map((message, i) => {
-        <MessageList key={i} message={message} fetchMessages={this.fetchMessages} />
-      })
-    }
+    // const mapMsg = (messages) => {
+    //   messages.map((message, i) => {
+    //     <MessageList key={i} message={message} fetchMessages={this.fetchMessages} />
+    //   })
+    // }
     return (
       <div className="App">
         <div className="App-header">

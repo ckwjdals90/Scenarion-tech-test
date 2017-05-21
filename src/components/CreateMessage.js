@@ -7,7 +7,6 @@ class CreateMessage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.currentMessageCount+1,
       text: "",
       author: "",
       in_reply_to: null,
