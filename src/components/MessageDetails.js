@@ -12,10 +12,13 @@ class MessageDetails extends Component {
   }
 
   deleteMessage(e) {
-    e.preventDefault();
-    fetch(`https://jungmin-tech-test.herokuapp.com/messages/${this.props.details.id}`, {
-      method: 'DELETE'
-    }).then(this.props.fetchMessages())
+    // e.preventDefault();
+    // fetch(`https://jungmin-tech-test.herokuapp.com/messages/${this.props.details.id}`, {
+    //   method: 'DELETE'
+    // })
+    this.props.handleDelete(this.props.details.id, this.props.msgkey)
+    console.log("Delete!");
+    this.props.fetchMessages();
   }
 
   render() {

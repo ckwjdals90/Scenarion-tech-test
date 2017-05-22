@@ -4,10 +4,13 @@
   "private": true,
   "dependencies": {
     "react": "^15.5.4",
+    "react-addons-update": "^15.5.2",
     "react-dom": "^15.5.4",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "eslint": "^3.19.0",
+    "eslint-plugin-react": "^7.0.1",
     "react-scripts": "1.0.1"
   },
   "scripts": {

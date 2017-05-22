@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import update from 'react-addons-update';
 import logo from './logo.svg';
 import './App.css';
 
@@ -19,6 +20,7 @@ class App extends Component {
     this.fetchMessages = this.fetchMessages.bind(this);
     this.handleToggle = this.handleToggle.bind(this);
     this.viewCreate = this.viewCreate.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
     // this.clearMessages = this.clearMessages.bind(this);
   }
 
@@ -69,6 +71,21 @@ class App extends Component {
     (this.state.toggle === true) ? this.setState({toggle: false}) : this.setState({toggle: true})
   }
 
+  handleDelete(msgid, msgkey) {
+    fetch(`https://jungmin-tech-test.herokuapp.com/messages/${msgid}`, {
+      method: 'DELETE'
+    })
+    this.setState({
+      messages: update(
+        this.state.messages,
+        {
+          $splice: [[msgkey, 1]]
+        }
+      )
+
+    })
+  }
+
   viewCreate() {
     if (this.state.toggle === true) {
       return <CreateMessage fetchMessages={this.fetchMessages}  handleToggle={this.handleToggle} /*clearMessages={this.clearMessages}*/ />
@@ -79,11 +96,12 @@ class App extends Component {
 
   render() {
 
-    // const mapMsg = (messages) => {
-    //   messages.map((message, i) => {
-    //     <MessageList key={i} message={message} fetchMessages={this.fetchMessages} />
-    //   })
-    // }
+    const mapMsg = (messages) => {
+      return messages.map((message, i) => {
+        return (<MessageList key={i} msgkey={i} message={message} fetchMessages={this.fetchMessages} handleDelete={this.handleDelete} />);
+      })
+    }
+
     return (
       <div className="App">
         <div className="App-header">
@@ -93,9 +111,7 @@ class App extends Component {
         <a href="#" onClick={this.handleToggle}>Create New Message</a>
         {this.viewCreate()}
         <ul>
-          {this.state.messages.map((message, i) => {
-            return <MessageList key={i} message={message} fetchMessages={this.fetchMessages} />
-          })}
+          {mapMsg(this.state.messages)}
         </ul>
       </div>
     );
