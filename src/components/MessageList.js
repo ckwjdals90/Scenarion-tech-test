@@ -33,7 +33,11 @@ class MessageList extends Component {
 
   renderDetails() {
     if (this.state.show === true) {
-      return <MessageDetails msgkey={this.props.msgkey} details={this.state.details} fetchMessages={this.props.fetchMessages} handleDelete={this.props.handleDelete} /*clearMessages={this.props.clearMessages}*/ />
+      return (<MessageDetails msgkey={this.props.msgkey}
+                details={this.state.details}
+                fetchMessages={this.props.fetchMessages}
+                handleDelete={this.props.handleDelete}
+                clearMessages={this.props.clearMessages} />);
     } else {
       return
     }

@@ -21,7 +21,7 @@ class App extends Component {
     this.handleToggle = this.handleToggle.bind(this);
     this.viewCreate = this.viewCreate.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
-    // this.clearMessages = this.clearMessages.bind(this);
+    this.clearMessages = this.clearMessages.bind(this);
   }
 
   componentDidMount() {
@@ -29,11 +29,11 @@ class App extends Component {
   }
 
 
-  // clearMessages() {
-  //   this.setState({
-  //     messages: []
-  //   })
-  // }
+  clearMessages() {
+    this.setState({
+      messages: []
+    })
+  }
 
   fetchMessages() {
     console.log(this.state.fetchFrom)
@@ -72,23 +72,22 @@ class App extends Component {
   }
 
   handleDelete(msgid, msgkey) {
+    console.log(msgkey);
+    this.setState({
+      messages: update(this.state.messages,
+        { $splice: [[msgkey, 1]] }
+      )
+    })
+    console.log(this.state.messages);
     fetch(`https://jungmin-tech-test.herokuapp.com/messages/${msgid}`, {
       method: 'DELETE'
-    })
-    this.setState({
-      messages: update(
-        this.state.messages,
-        {
-          $splice: [[msgkey, 1]]
-        }
-      )
-
     })
   }
 
   viewCreate() {
     if (this.state.toggle === true) {
-      return <CreateMessage fetchMessages={this.fetchMessages}  handleToggle={this.handleToggle} /*clearMessages={this.clearMessages}*/ />
+      return (<CreateMessage fetchMessages={this.fetchMessages}
+                handleToggle={this.handleToggle}/>);
     } else {
       return;
     }
@@ -98,7 +97,9 @@ class App extends Component {
 
     const mapMsg = (messages) => {
       return messages.map((message, i) => {
-        return (<MessageList key={i} msgkey={i} message={message} fetchMessages={this.fetchMessages} handleDelete={this.handleDelete} />);
+        return (<MessageList key={i} msgkey={i}
+                  message={message}
+                  fetchMessages={this.fetchMessages} clearMessages={this.clearMessages}  handleDelete={this.handleDelete} />);
       })
     }
 
@@ -109,7 +110,7 @@ class App extends Component {
           <h2>Jungmin's Tech Test</h2>
         </div>
         <a href="#" onClick={this.handleToggle}>Create New Message</a>
-        {this.viewCreate()}
+          {this.viewCreate()}
         <ul>
           {mapMsg(this.state.messages)}
         </ul>
